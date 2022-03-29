@@ -30,6 +30,7 @@ namespace WebBerrasBio.Controllers
             }
             var activeMovie = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
             TempData["price"] = activeMovie.Price;      //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
+                                                        //Gör en selectlist på antalet biljetter som man kan boka
             //ViewBag.ActiveMovie = activeMovie;        ////TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum
             return View();
         }
@@ -45,7 +46,6 @@ namespace WebBerrasBio.Controllers
             }
             if (ModelState.IsValid)
             {
-                int bookingId;
                 var activeMovieModel = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
                 var saloon = _saloonService.GetSaloonByID(activeMovieModel.SaloonModelId);
                 bool isFull = _bookingService.CheckAvailableSeats(saloon.AvailableSeats, bookingModels.BookedTickets);
@@ -56,7 +56,8 @@ namespace WebBerrasBio.Controllers
                 }
                 _saloonService.AdjustAvailableToBookedSeats(saloon, bookingModels);
                 _bookingService.InsertBooking(bookingModels);
-                _bookingService.Save();                         //TODO Vill gärna få detta fixat så att man inte behöver spara innan. Något med FK
+                _bookingService.Save();                         //TODO Finns det ett bättre sätt att lösa detta? Vill inte hämta booking.id innan man sparar,
+                                                                //står på 0
                 _seatService.UpdateSeat(bookingModels.BookedTickets, bookingModels.Id);
                 _seatService.Save();
                 return RedirectToAction("ListView", "ActiveMovie");
