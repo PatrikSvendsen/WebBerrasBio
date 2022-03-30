@@ -11,7 +11,6 @@ namespace DataLibrary.Services
         {
             _timeRepository = timeRepository;
         }
-
         public List<TimeModel> GetTimes() =>
             _timeRepository.GetTimes().ToList();
     }

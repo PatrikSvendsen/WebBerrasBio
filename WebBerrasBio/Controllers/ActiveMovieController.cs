@@ -11,7 +11,6 @@ public class ActiveMovieController : Controller
     {
         _activeMovieServce = activeMovieService;
     }
-
     public ActionResult ListView()
     {
         var activeMovies = _activeMovieServce.GetDetailedActiveMovieList();

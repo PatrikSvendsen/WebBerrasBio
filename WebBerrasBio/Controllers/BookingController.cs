@@ -28,9 +28,11 @@ namespace WebBerrasBio.Controllers
             {
                 return NotFound();
             }
-            var activeMovie = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
-            TempData["price"] = activeMovie.Price;      //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
-                                                        //Gör en selectlist på antalet biljetter som man kan boka
+            var activeMovie =
+                _activeMovieService.GetActiveMovieByID(activeMovieModelId).Price;
+
+            TempData["price"] = activeMovie;      //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
+            //                                            //Gör en selectlist på antalet biljetter som man kan boka
             //ViewBag.ActiveMovie = activeMovie;        ////TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum
             return View();
         }
@@ -118,17 +120,14 @@ namespace WebBerrasBio.Controllers
             var seatReset = _seatService.GetSeats();
             foreach (var seat in seatReset)
             {
-                seat.IsBooked = false;
-                seat.BookingModelId = -1;
+                _seatService.DeUpdateSeats(seat.Id);
             }
             var saloons = _saloonService.GetSaloons();
             foreach (var saloon in saloons)
             {
                 saloon.AvailableSeats = saloon.NumberOfSeats;
             }
-
             _bookingService.Save();
-
             return RedirectToAction(nameof(ListView));
         }
     }

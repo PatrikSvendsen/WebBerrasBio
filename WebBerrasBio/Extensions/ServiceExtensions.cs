@@ -16,16 +16,16 @@ public static class ServiceExtensions
     public static void ConfigureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        //-----------|DbContext
+        //-----------|  DbContext
         services.AddScoped<RepositoryContext>();
-        //-----------|Repositories
+        //-----------|  Repositories
         services.AddTransient<IActiveMovieRepository, ActiveMovieRepository>();
         services.AddTransient<IMovieRepository, MovieRepository>();
         services.AddTransient<IBookingRepository, BookingRepository>();
         services.AddTransient<ITimeRepository, TimeRepository>();
         services.AddTransient<ISaloonRepository, SaloonRepository>();
         services.AddTransient<ISeatRepository, SeatRepository>();
-        //-----------|Services
+        //-----------|  Services
         services.AddTransient<IActiveMovieService, ActiveMovieService>();
         services.AddTransient<IMovieService, MovieService>();
         services.AddTransient<IBookingService, BookingService>();

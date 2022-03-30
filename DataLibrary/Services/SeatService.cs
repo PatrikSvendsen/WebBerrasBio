@@ -1,5 +1,4 @@
 ﻿using DataLibrary.Entities;
-using DataLibrary.Repository;
 using DataLibrary.Repository.Interfaces;
 using DataLibrary.Services.Interfaces;
 
@@ -8,15 +7,10 @@ namespace DataLibrary.Services;
 public class SeatService : ISeatService
 {
     private readonly ISeatRepository _seatRepository;
-    private readonly IBookingRepository _bookingRepository;
-    private readonly RepositoryContext _repositoryContext;
 
-    public SeatService(ISeatRepository seatRepository,
-        RepositoryContext repositoryContext, IBookingRepository bookingRepository)
+    public SeatService(ISeatRepository seatRepository)
     {
         _seatRepository = seatRepository;
-        _repositoryContext = repositoryContext;
-        _bookingRepository = bookingRepository;
     }
 
     public List<SeatModel> GetSeats() =>

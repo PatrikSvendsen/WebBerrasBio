@@ -12,7 +12,6 @@ namespace DataLibrary.Services
         {
             _movieRepository = movieRepository;
         }
-
         public List<MovieModel> GetMovies() =>
             _movieRepository.GetMovies().ToList();
     }

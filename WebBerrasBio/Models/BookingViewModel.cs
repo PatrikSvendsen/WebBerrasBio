@@ -10,18 +10,18 @@ namespace WebBerrasBio.Models
 
         [Display(Name = "First name")]
         [Required(ErrorMessage = "This need to be filled out!")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
-        public string FirstName { get; set; }
+        [RegularExpression(@"^[A-Z]+[a-zA-Z'\s-]*$")]
+        public string FirstName { get; set; } = String.Empty; //TODO Om det uppstår problem kolla här först. 
 
         [Display(Name = "Last name")]
         [Required(ErrorMessage = "This need to be filled out!")]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = String.Empty;
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "This is not a valid email address")]
-        public string EmailAddress { get; set; }
+        public string EmailAddress { get; set; } = String.Empty;
 
         [Display(Name = "Movie")]
         [Required]
@@ -31,11 +31,11 @@ namespace WebBerrasBio.Models
         [Range(1, 12, ErrorMessage = "Minimum: 1 ticket. Maximum 12 tickets")]
         [Required]
         public int BookedTickets { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = String.Empty;
 
         [DataType(DataType.DateTime)]
         public DateTime ReleaseDate { get; set; }
-        public string Genre { get; set; }
+        public string Genre { get; set; } = String.Empty;
         public int Price { get; set; }
 
     }
