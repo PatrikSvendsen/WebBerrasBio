@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebBerrasBio.Controllers
 {
+    /// <summary>
+    /// BookingController - Hantering av booking och allt som berör det.
+    /// </summary>
     public class BookingController : Controller
     {
         private readonly IBookingService _bookingService;
@@ -104,8 +107,8 @@ namespace WebBerrasBio.Controllers
             _seatService.Save();
             return RedirectToAction(nameof(ListView));
         }
-
-        [HttpGet] // Ingen snygg men get shits done.
+        //GET
+        [HttpGet] // Inget snygg men finns här enbart för att kunna tömma bookings snabbt och enkelt.
         public ActionResult DeleteAll()
         {
             var bookingList = _bookingService.GetDetailedBookingList();

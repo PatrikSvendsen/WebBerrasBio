@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataLibrary.Entities;
-
+/// <summary>
+/// En model-class för aktiva filmer som visas just  nu. Har dessutom FK mot SaloonModel, MovieModel och TimeModel.
+/// </summary>
 public class ActiveMovieModel
 {
     [Key]

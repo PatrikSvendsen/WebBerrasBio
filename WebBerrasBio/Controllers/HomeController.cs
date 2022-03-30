@@ -4,6 +4,9 @@ using WebBerrasBio.Models;
 
 namespace WebBerrasBio.Controllers
 {
+    /// <summary>
+    /// Standard HomeController - Den finns kvar ebart för att hantera Error och felhantering. 
+    /// </summary>
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -1,7 +1,13 @@
-﻿namespace DataLibrary.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace DataLibrary.Entities;
+/// <summary>
+/// En model-class som hanterar seats
+/// </summary>
 public class SeatModel
 {
+    [Key]
+    [Required]
     public int Id { get; set; }
     public int InternalSeatNumber { get; set; }
     public bool IsBooked { get; set; } = false;

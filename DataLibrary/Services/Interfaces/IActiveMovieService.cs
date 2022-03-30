@@ -1,11 +1,10 @@
 ﻿using DataLibrary.Entities;
 
-namespace DataLibrary.Services.Interfaces
+namespace DataLibrary.Services.Interfaces;
+
+public interface IActiveMovieService
 {
-    public interface IActiveMovieService
-    {
-        List<ActiveMovieModel> GetActiveMovies();
-        IEnumerable<ActiveMovieModel> GetDetailedActiveMovieList();
-        ActiveMovieModel GetActiveMovieByID(int? id);
-    }
+    List<ActiveMovieModel> GetActiveMovies();
+    IEnumerable<ActiveMovieModel> GetDetailedActiveMovieList();
+    ActiveMovieModel GetActiveMovieByID(int? id);
 }

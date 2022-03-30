@@ -1,19 +1,28 @@
 ﻿using DataLibrary.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataLibrary.Repository.Interfaces
+namespace DataLibrary.Repository.Interfaces;
+
+/// <summary>
+/// Interface-class för enskilda klasser. Mellanhand från repository till service lagret. 
+/// Detta interface ärver dessutom från "IDisposable" som rensar/släpper/frigör resurser efter man använt dem.
+/// </summary>
+public interface IActiveMovieRepository : IDisposable
 {
-    public interface IActiveMovieRepository : IDisposable
-    {
-        IEnumerable<ActiveMovieModel> GetActiveMovies();
-        ActiveMovieModel GetActiveMovieByID(int? activeMovieId);
-        void InsertActiveMovie(ActiveMovieModel activeMovie);
-        void DeleteActiveMovie(int activeMovieId);
-        void UpdateActiveMovie(ActiveMovieModel activeMovie);
-        void Save();
-    }
+    /// <summary>
+    /// Metod som tar emot ett int värde och kollar om det finns i databasen.
+    /// </summary>
+    /// <param name="activeMovieId"></param>
+    /// <returns>Returnerar funna objektet</returns>
+    IEnumerable<ActiveMovieModel> GetActiveMovies();
+
+    /// <summary>
+    /// Metod som på förfrågan tar fram all data från databasen och lagrar det i form av IEnumerable
+    /// </summary>
+    /// <returns>Returnerar en IEnumerable med all information</returns>
+    ActiveMovieModel GetActiveMovieByID(int? activeMovieId);
+
+    /// <summary>
+    /// Metod som sparar ändringar gjorda mot databasen.
+    /// </summary>
+    void Save();
 }

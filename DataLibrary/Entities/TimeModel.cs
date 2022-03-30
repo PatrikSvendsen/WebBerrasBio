@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataLibrary.Entities;
-
+/// <summary>
+/// En model-class som enbart har visningstider 
+/// </summary>
 public class TimeModel
 {
-    [Required]
     [Key]
+    [Required]
     public int Id { get; set; }
 
     [DataType(DataType.DateTime)]

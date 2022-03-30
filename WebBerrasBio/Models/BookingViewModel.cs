@@ -2,6 +2,9 @@
 
 namespace WebBerrasBio.Models
 {
+    /// <summary>
+    /// En model som enbart är skapat för vy-visning och validering av input data
+    /// </summary>
     public class BookingViewModel
     {
         [Key]
@@ -10,18 +13,16 @@ namespace WebBerrasBio.Models
 
         [Display(Name = "First name")]
         [Required(ErrorMessage = "This need to be filled out!")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z'\s-]*$")]
-        public string FirstName { get; set; } = String.Empty; //TODO Om det uppstår problem kolla här först. 
+        public string FirstName { get; set; } 
 
         [Display(Name = "Last name")]
         [Required(ErrorMessage = "This need to be filled out!")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
-        public string LastName { get; set; } = String.Empty;
+        public string LastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "This is not a valid email address")]
-        public string EmailAddress { get; set; } = String.Empty;
+        public string EmailAddress { get; set; }
 
         [Display(Name = "Movie")]
         [Required]
@@ -31,11 +32,13 @@ namespace WebBerrasBio.Models
         [Range(1, 12, ErrorMessage = "Minimum: 1 ticket. Maximum 12 tickets")]
         [Required]
         public int BookedTickets { get; set; }
-        public string Title { get; set; } = String.Empty;
 
         [DataType(DataType.DateTime)]
+        [Display(Name = "Releasedate")]
         public DateTime ReleaseDate { get; set; }
-        public string Genre { get; set; } = String.Empty;
+
+        public string Title { get; set; }
+        public string Genre { get; set; }
         public int Price { get; set; }
 
     }

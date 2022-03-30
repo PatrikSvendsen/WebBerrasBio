@@ -6,6 +6,10 @@ namespace WebBerrasBio.Data;
 
 public class SeedData
 {
+    /// <summary>
+    /// Här seedar vi data til Db första gången programmet körs.
+    /// </summary>
+    /// <param name="serviceProvider"></param>
     public static void Initialize(IServiceProvider serviceProvider)
     {
         using RepositoryContext? context = new(

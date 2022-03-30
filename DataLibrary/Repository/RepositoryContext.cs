@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataLibrary.Repository
 {
+    /// <summary>
+    /// Detta är huvud-context classen. Här kopplas modelerna ihop till DbContext. 
+    /// Enbart för EF och code-first approach.
+    /// </summary>
     public class RepositoryContext : DbContext
     {
         public RepositoryContext()
