@@ -15,6 +15,7 @@ public class BookingRepository : IBookingRepository
     {
         this._repositoryContext = repositoryContext;
     }
+
     /// <summary>
     /// Metod som tar emot ett int värde och kollar om det finns. Finns det tas det bort från databasen.
     /// </summary>
@@ -24,6 +25,7 @@ public class BookingRepository : IBookingRepository
         BookingModel booking = _repositoryContext.BookingModels.Find(bookingID);
         _repositoryContext.BookingModels.Remove(booking);
     }
+
     /// <summary>
     /// Metod som tar emot ett int värde och kollar om det finns i databasen.
     /// </summary>
@@ -33,6 +35,7 @@ public class BookingRepository : IBookingRepository
     {
         return _repositoryContext.BookingModels.Find(bookingId);
     }
+
     /// <summary> 
     /// Metod som på förfrågan tar fram all data från databasen och lagrar det i form av IEnumerable
     /// </summary>
@@ -41,6 +44,7 @@ public class BookingRepository : IBookingRepository
     {
         return _repositoryContext.BookingModels;
     }
+
     /// <summary>
     /// Metod som tar emot data i form av en speciell class-typ och lägger sedan in den i databasen.
     /// </summary>
@@ -49,6 +53,7 @@ public class BookingRepository : IBookingRepository
     {
         _repositoryContext.BookingModels.Add(booking);
     }
+
     /// <summary>
     /// Metod för att uppdatera befintlig rad/data i databasen. Använder specific class-typ i indata
     /// </summary>
@@ -57,6 +62,7 @@ public class BookingRepository : IBookingRepository
     {
         _repositoryContext.Entry(booking).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
     }
+
     /// <summary>
     /// Metod som sparar ändringar gjorda mot databasen.
     /// </summary>

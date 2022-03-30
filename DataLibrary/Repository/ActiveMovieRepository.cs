@@ -15,6 +15,7 @@ public class ActiveMovieRepository : IActiveMovieRepository
     {
         this._repositoryContext = repositoryContext;
     }
+
     /// <summary>
     /// Metod som tar emot ett int värde och kollar om det finns i databasen.
     /// </summary>
@@ -24,6 +25,7 @@ public class ActiveMovieRepository : IActiveMovieRepository
     {
         return _repositoryContext.ActiveMovieModels.Find(activeMovieId);
     }
+
     /// <summary>
     /// Metod som på förfrågan tar fram all data från databasen och lagrar det i form av IEnumerable
     /// </summary>
@@ -32,6 +34,7 @@ public class ActiveMovieRepository : IActiveMovieRepository
     {
         return _repositoryContext.ActiveMovieModels;
     }
+
     /// <summary>
     /// Metod som sparar ändringar gjorda mot databasen.
     /// </summary>

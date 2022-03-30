@@ -4,5 +4,5 @@ namespace DataLibrary.Services.Interfaces;
 
 public interface IMovieService
 {
-    List<MovieModel> GetMovies();
+    MovieModel GetMovieById(int? id);
 }

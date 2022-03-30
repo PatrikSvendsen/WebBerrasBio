@@ -24,6 +24,7 @@ public class SaloonRepository : ISaloonRepository
     {
         return _repositoryContext.SaloonModels.Find(saloonId);
     }
+
     /// <summary>
     /// Metod som på förfrågan tar fram all data från databasen och lagrar det i form av IEnumerable
     /// </summary>
@@ -32,6 +33,7 @@ public class SaloonRepository : ISaloonRepository
     {
         return _repositoryContext.SaloonModels;
     }
+
     /// <summary>
     /// Metod som sparar ändringar gjorda mot databasen.
     /// </summary>

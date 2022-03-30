@@ -13,10 +13,5 @@ namespace DataLibrary.Repository.Interfaces
         /// </summary>
         /// <returns>En IEnumerable med all information</returns>
         IEnumerable<TimeModel> GetTimes();
-
-        /// <summary>
-        /// Metod som sparar ändringar gjorda mot databasen.
-        /// </summary>
-        void Save();
     }
 }

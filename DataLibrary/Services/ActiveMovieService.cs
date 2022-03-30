@@ -30,6 +30,11 @@ public class ActiveMovieService : IActiveMovieService
     public List<ActiveMovieModel> GetActiveMovies() =>
         _activeMovieRepository.GetActiveMovies().ToList();
 
+    /// <summary>
+    /// Metod som tar fram en mer detaljerad lista. Inkluderar ActiveMovieModel, MovieModel och SaloonModel för att få fram exakt värde ur tabellen.
+    /// Används för att få index-värden. Denna metod representerar en enkel join av olika Models
+    /// </summary>
+    /// <returns>Returnerar allt i form av en IEnumerable</returns>
     public IEnumerable<ActiveMovieModel> GetDetailedActiveMovieList()
     {
         var detailedList = _repositoryContext.ActiveMovieModels
@@ -40,6 +45,11 @@ public class ActiveMovieService : IActiveMovieService
         return detailedList;
     }
 
+    /// <summary>
+    /// Här kallar vi på metoden som finner sig i repository lagret. Vi skickar en förfrågan om att leta upp ett objekt på Id.
+    /// </summary>
+    /// <param name="id">Id representerar det objekt man vill metoden ska leta fram</param>
+    /// <returns>Om det finns något på Id så kommer det att returneras</returns>
     public ActiveMovieModel GetActiveMovieByID(int? id)
     {
         var activeMovie = _activeMovieRepository.GetActiveMovieByID(id);

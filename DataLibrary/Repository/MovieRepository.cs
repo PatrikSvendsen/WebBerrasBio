@@ -15,29 +15,15 @@ public class MovieRepository : IMovieRepository
     {
         this._repositoryContext = repositoryContext;
     }
+
     /// <summary>
     /// Metod som tar emot ett int värde och kollar om det finns i databasen.
     /// </summary>
     /// <param name="movieId"></param>
     /// <returns>Returnerar funna objektet</returns>
-    public MovieModel GetMovieByID(int movieId)
+    public MovieModel GetMovieById(int? movieId)
     {
         return _repositoryContext.MovieModels.Find(movieId);
-    }
-    /// <summary>
-    /// Metod som på förfrågan tar fram all data från databasen och lagrar det i form av IEnumerable
-    /// </summary>
-    /// <returns>Returnerar en IEnumerable med all information</returns>
-    public IEnumerable<MovieModel> GetMovies()
-    {
-        return _repositoryContext.MovieModels;
-    }
-    /// <summary>
-    /// Metod som sparar ändringar gjorda mot databasen.
-    /// </summary>
-    public void Save()
-    {
-        _repositoryContext.SaveChanges();
     }
 
     private bool disposed = false;

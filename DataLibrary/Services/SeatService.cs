@@ -17,23 +17,44 @@ public class SeatService : ISeatService
     {
         _seatRepository = seatRepository;
     }
+
     /// <summary>
     /// Här kallar vi på metoden som finner sig i repository lagret. Enkelt så skickar vi en förfrågan om att "Ge oss allt du har på denna modellen"
     /// </summary>
     /// <returns>Returnerar allt i en lista</returns>
     public List<SeatModel> GetSeats() =>
         _seatRepository.GetSeats().ToList();
+
+    /// <summary>
+    /// Metod som skickar till repository lagret att databasen ska sparas.
+    /// </summary>
     public void Save() => _seatRepository.Save();
 
-    public SeatModel GetSeatByID(int? id)
+    /// <summary>
+    /// Här kallar vi på metoden som finner sig i repository lagret. Vi skickar en förfrågan om att leta upp ett objekt på Id.
+    /// </summary>
+    /// <param name="seatId">seatId representerar indexet på objekt man vill metoden ska leta fram</param>
+    /// <returns>Om det finns något på Id så kommer det att returneras</returns>
+    public SeatModel GetSeatByID(int? seatId)
     {
-        var seat = _seatRepository.GetSeatByID(id);
+        var seat = _seatRepository.GetSeatByID(seatId);
         return seat;
     }
+
+    /// <summary>
+    /// Metod som skickar en förfråga till repository lagret om att hitta första lediga plats och sedan skicka tillbaka det.
+    /// Man kollar mot property "IsBooked". false/true
+    /// </summary>
+    /// <returns>Returnerar en tom seat</returns>
     public SeatModel FindEmptySeat()
     {
         return _seatRepository.FindEmptySeat();
     }
+
+    /// <summary>
+    /// Metod som tar emot antalet bokade platser i form av int och ett boknings id.
+    /// Sedan används metoden FindEmptySeat för att hitta en ledig plats.
+    /// </summary>
     public void UpdateSeat(int? bookedTickets, int bookingId)
     {
         for (int i = 1; i <= bookedTickets; i++)
@@ -41,15 +62,19 @@ public class SeatService : ISeatService
             var seatList = _seatRepository.FindEmptySeat();
             seatList.BookingModelId = bookingId;
             seatList.IsBooked = true;
-            _seatRepository.Save();     // Är detta optimalt? Ska man skippa att ha 
-                                        // färdiga seats i tabellen och lägga till/
-                                        // ta bort efter hand?
+            _seatRepository.Save();
         }
     }
-    public void DeUpdateSeats(int id)
+
+    /// <summary>
+    /// Metod som som tar emot en int och letar upp alla platser som har detta i sin property för BookingModelId.
+    /// Värdena ändras sedan tillbaka till standard för att visa systemet att platsen är ledig och redo för ny bokning.
+    /// Man kollar mot propertyn "BookingId"
+    /// </summary>
+    public void DeUpdateSeats(int bookingId)
     {
         var seats = _seatRepository.GetSeats()
-                    .Where(x => x.BookingModelId == id);
+                    .Where(x => x.BookingModelId == bookingId);
         foreach (var item in seats)
         {
             item.IsBooked = false;

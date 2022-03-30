@@ -17,10 +17,15 @@ public class MovieService : IMovieService
     {
         _movieRepository = movieRepository;
     }
+
     /// <summary>
-    /// Här kallar vi på metoden som finner sig i repository lagret. Enkelt så skickar vi en förfrågan om att "Ge oss allt du har på denna modellen"
+    /// Här kallar vi på metoden som finner sig i repository lagret. Vi skickar en förfrågan om att leta upp ett objekt på Id.
     /// </summary>
-    /// <returns>Returnerar allt i en lista</returns>
-    public List<MovieModel> GetMovies() =>
-        _movieRepository.GetMovies().ToList();
+    /// <param name="id">Id representerar det objekt man vill metoden ska leta fram</param>
+    /// <returns>Om det finns något på Id så kommer det att returneras</returns>
+    public MovieModel GetMovieById(int? id)
+    {
+        var movie = _movieRepository.GetMovieById(id);
+        return movie;
+    }
 }

@@ -16,10 +16,11 @@ public class TimeService : ITimeService
     {
         _timeRepository = timeRepository;
     }
+
     /// <summary>
     /// Här kallar vi på metoden som finner sig i repository lagret. Enkelt så skickar vi en förfrågan om att "Ge oss allt du har på denna modellen"
     /// </summary>
-    /// <returns>Returnerar allt i en lista</returns>
+    /// <returns>Returnerar allt i form av en lista</returns>
     public List<TimeModel> GetTimes() =>
         _timeRepository.GetTimes().ToList();
 }

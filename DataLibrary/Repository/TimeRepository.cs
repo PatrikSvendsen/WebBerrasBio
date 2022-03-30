@@ -23,13 +23,6 @@ public class TimeRepository : ITimeRepository
     {
         return _repositoryContext.TimeModels;
     }
-    /// <summary>
-    /// Metod som sparar ändringar gjorda mot databasen.
-    /// </summary>
-    public void Save()
-    {
-        _repositoryContext.SaveChanges();
-    }
 
     private bool disposed = false;
     /// <summary>

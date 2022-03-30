@@ -13,14 +13,17 @@ namespace WebBerrasBio.Controllers
         private readonly IActiveMovieService _activeMovieService;
         private readonly ISaloonService _saloonService;
         private readonly ISeatService _seatService;
+        private readonly IMovieService _movieService;
 
         public BookingController(IBookingService bookingService,
-            IActiveMovieService activeMovieService, ISaloonService saloonService, ISeatService seatService)
+            IActiveMovieService activeMovieService, ISaloonService saloonService, ISeatService seatService,
+            IMovieService movieService)
         {
             _bookingService = bookingService;
             _activeMovieService = activeMovieService;
             _saloonService = saloonService;
             _seatService = seatService;
+            _movieService = movieService;
         }
 
         //GET
@@ -31,12 +34,10 @@ namespace WebBerrasBio.Controllers
             {
                 return NotFound();
             }
-            var activeMovie =
-                _activeMovieService.GetActiveMovieByID(activeMovieModelId).Price;
-
-            TempData["price"] = activeMovie;      //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
-            //                                            //Gör en selectlist på antalet biljetter som man kan boka
-            //ViewBag.ActiveMovie = activeMovie;        ////TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum
+            var activeMovie = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
+            TempData["price"] = activeMovie.Price;                                //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
+                                                                            //Gör en selectlist på antalet biljetter som man kan boka
+            ViewBag.Movie = _movieService.GetMovieById(activeMovie.MovieModelId);    //TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum
             return View();
         }
         //POST
