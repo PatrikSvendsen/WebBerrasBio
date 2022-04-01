@@ -57,15 +57,15 @@
                             @Html.DisplayFor(modelItem => item.BookedTickets)
                         </td>
                         <td>
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a class="btn btn-warning" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <button class="btn-danger rounded">
-        <a asp-action="DeleteAll">Delete All</a>
-    </button>
+        <div>
+        <a class="btn btn-danger btn-lg d-grid gap-2" asp-action="DeleteAll">Delete all bookings!</a>
+        </div>
     </div>
 
 </div>

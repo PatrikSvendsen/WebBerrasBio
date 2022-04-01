@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebBerrasBio.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20220329184953_InitialCreate")]
+    [Migration("20220401110224_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

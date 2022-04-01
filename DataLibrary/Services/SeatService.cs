@@ -12,7 +12,6 @@ namespace DataLibrary.Services;
 public class SeatService : ISeatService
 {
     private readonly ISeatRepository _seatRepository;
-
     public SeatService(ISeatRepository seatRepository)
     {
         _seatRepository = seatRepository;

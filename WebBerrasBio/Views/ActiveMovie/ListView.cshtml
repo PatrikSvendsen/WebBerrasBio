@@ -4,7 +4,6 @@
 }
 
 <div class="container-fluid vh-100 d-flex">
-
     <div class="col-sm col">
         <table id="myTable" class="table">
             <thead>
@@ -60,8 +59,8 @@
                                 }
                                 else
                                 {
-                                    <a asp-controller="Booking" asp-action="Create" asp-route-activeMovieModelId="@item.Id"
-                                    class="hidden" >Book Here</a>
+                                    <a class="btn btn-primary bi bi-bookmark-star" asp-controller="Booking" asp-action="Create" asp-route-activeMovieModelId="@item.Id"
+                                    class="hidden" > | Book Here</a>
                                 }
                             }
                         </td>

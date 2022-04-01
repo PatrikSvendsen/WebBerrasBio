@@ -84,7 +84,7 @@ public class BookingService : IBookingService
             .ThenInclude(b => b.SaloonModel);
         return detailedBookingList.ToList();
     }
-
+    
     /// <summary>
     /// Metod som tar emot ett int värde och skickar det vidare till repository lagret för borttagning. 
     /// </summary>
@@ -93,5 +93,4 @@ public class BookingService : IBookingService
     {
         _bookingRepository.DeleteBooking(bookingId);
     }
-
 }

@@ -2,137 +2,132 @@
 using DataLibrary.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebBerrasBio.Controllers
+namespace WebBerrasBio.Controllers;
+
+/// <summary>
+/// BookingController - Hantering av booking och allt som berör det.
+/// </summary>
+public class BookingController : Controller
 {
-    /// <summary>
-    /// BookingController - Hantering av booking och allt som berör det.
-    /// </summary>
-    public class BookingController : Controller
+    private readonly IBookingService _bookingService;
+    private readonly IActiveMovieService _activeMovieService;
+    private readonly ISaloonService _saloonService;
+    private readonly ISeatService _seatService;
+    private readonly IMovieService _movieService;
+
+    public BookingController(IBookingService bookingService,
+        IActiveMovieService activeMovieService, ISaloonService saloonService, ISeatService seatService,
+        IMovieService movieService)
     {
-        private readonly IBookingService _bookingService;
-        private readonly IActiveMovieService _activeMovieService;
-        private readonly ISaloonService _saloonService;
-        private readonly ISeatService _seatService;
-        private readonly IMovieService _movieService;
+        _bookingService = bookingService;
+        _activeMovieService = activeMovieService;
+        _saloonService = saloonService;
+        _seatService = seatService;
+        _movieService = movieService;
+    }
 
-        public BookingController(IBookingService bookingService,
-            IActiveMovieService activeMovieService, ISaloonService saloonService, ISeatService seatService,
-            IMovieService movieService)
+    //GET
+    [HttpGet]
+    public IActionResult Create(int? activeMovieModelId)
+    {
+        if (activeMovieModelId == null)
         {
-            _bookingService = bookingService;
-            _activeMovieService = activeMovieService;
-            _saloonService = saloonService;
-            _seatService = seatService;
-            _movieService = movieService;
+            return NotFound();
         }
+        var activeMovie = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
+        TempData["price"] = activeMovie.Price;                                //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
+                                                                              //Gör en selectlist på antalet biljetter som man kan boka
+                                                                              //ViewBag.Movie = _activeMovieService.GetDetailedMovieListById(activeMovieModelId);    //TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum'
+        ViewBag.Movie = _bookingService.GetDetailedBookingList()
+            .FirstOrDefault(x => x.ActiveMovieModelId == activeMovieModelId);    //TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum'
 
-        //GET
-        [HttpGet]
-        public IActionResult Create(int? activeMovieModelId)
+        return View();
+    }
+    //POST
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create([Bind("Id,FirstName,LastName,EmailAddress,ActiveMovieModelId,bookedTickets")]
+                                                int? activeMovieModelId, BookingModel bookingModels)
+    {
+        if (activeMovieModelId == null)
         {
-            if (activeMovieModelId == null)
-            {
-                return NotFound();
-            }
-            var activeMovie = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
-            TempData["price"] = activeMovie.Price;                                //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
-                                                                            //Gör en selectlist på antalet biljetter som man kan boka
-            ViewBag.Movie = _movieService.GetMovieById(activeMovie.MovieModelId);    //TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum
-            return View();
+            return NotFound();
         }
-        //POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,FirstName,LastName,EmailAddress,ActiveMovieModelId,bookedTickets")]
-                                                    int? activeMovieModelId, BookingModel bookingModels)
+        if (ModelState.IsValid)
         {
-            if (activeMovieModelId == null)
+            var activeMovieModel = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
+            var saloon = _saloonService.GetSaloonByID(activeMovieModel.SaloonModelId);
+            bool isFull = _bookingService.CheckAvailableSeats(saloon.AvailableSeats, bookingModels.BookedTickets);
+            if (isFull == true)
             {
-                return NotFound();
+                ViewBag.Full = $"Full, there is only {saloon.AvailableSeats} left ";
+                return View();
             }
-            if (ModelState.IsValid)
-            {
-                var activeMovieModel = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
-                var saloon = _saloonService.GetSaloonByID(activeMovieModel.SaloonModelId);
-                bool isFull = _bookingService.CheckAvailableSeats(saloon.AvailableSeats, bookingModels.BookedTickets);
-                if (isFull == true)
-                {
-                    ViewBag.Full = $"Full, there is only {saloon.AvailableSeats} left ";
-                    return View();
-                }
-                _saloonService.AdjustAvailableToBookedSeats(saloon, bookingModels);
-                _bookingService.InsertBooking(bookingModels);
-                _bookingService.Save();                         //TODO Finns det ett bättre sätt att lösa detta? Vill inte hämta booking.id innan man sparar,
-                                                                //står på 0
-                _seatService.UpdateSeat(bookingModels.BookedTickets, bookingModels.Id);
-                _seatService.Save();
-                return RedirectToAction("ListView", "ActiveMovie");
-            }
-            return View();
-        }
-
-        //GET
-        [HttpGet]
-        public IActionResult ListView()
-        {
-            var checkBookings = _bookingService.GetDetailedBookingList();
-            return View(checkBookings);
-        }
-        // GET
-        [HttpGet]
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var bookingToDelete = _bookingService.GetDetailedBookingList()
-                .FirstOrDefault(x => x.Id == id);
-            if (bookingToDelete == null)
-            {
-                return NotFound();
-            }
-            return View(bookingToDelete);
-        }
-        //POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken] //TODO Kontrollera så att denna finns där den behövs. Här och i html-filen
-        public IActionResult Delete(int id)
-        {
-            var booking = _bookingService.GetBookingByID(id);
-            var activeMovie = _activeMovieService.GetActiveMovieByID(booking.ActiveMovieModelId);
-            var saloon = _saloonService.GetSaloonByID(activeMovie.SaloonModelId);
-            _saloonService.AdjustAvailableBookedSeatsWhenDelete(saloon, booking);
-            _seatService.DeUpdateSeats(id);
-            _bookingService.DeleteBooking(id);
+            _saloonService.AdjustAvailableToBookedSeats(saloon, bookingModels);
+            _bookingService.InsertBooking(bookingModels);
+            _bookingService.Save();                         //TODO Finns det ett bättre sätt att lösa detta? Vill inte hämta booking.id innan man sparar,
+                                                            //står på 0
+            _seatService.UpdateSeat(bookingModels.BookedTickets, bookingModels.Id);
             _seatService.Save();
-            return RedirectToAction(nameof(ListView));
+            return RedirectToAction("ListView", "ActiveMovie");
         }
-        //GET
-        [HttpGet] // Inget snygg men finns här enbart för att kunna tömma bookings snabbt och enkelt.
-        public ActionResult DeleteAll()
+        return View();
+    }
+    //GET
+    [HttpGet]
+    public IActionResult ListView()
+    {
+        var checkBookings = _bookingService.GetDetailedBookingList();
+        return View(checkBookings);
+    }
+    //GET
+    [HttpGet]
+    public IActionResult Delete(int? id)
+    {
+        var bookingToDelete = _bookingService.GetDetailedBookingList()
+            .FirstOrDefault(x => x.Id == id);
+
+        return View(bookingToDelete);
+    }
+    //POST
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken] //TODO Kontrollera så att denna finns där den behövs. Här och i html-filen
+    public IActionResult Delete(int id)
+    {
+
+        var booking = _bookingService.GetBookingByID(id);
+        var activeMovie = _activeMovieService.GetActiveMovieByID(booking.ActiveMovieModelId);
+        var saloon = _saloonService.GetSaloonByID(activeMovie.SaloonModelId);
+        _saloonService.AdjustAvailableBookedSeatsWhenDelete(saloon, booking);
+        _seatService.DeUpdateSeats(id);
+        _bookingService.DeleteBooking(id);
+        _seatService.Save();
+        return RedirectToAction(nameof(ListView));
+    }
+    //GET
+    [HttpGet] // Inget snygg men finns här enbart för att kunna tömma bookings snabbt och enkelt.
+    public ActionResult DeleteAll()
+    {
+        var bookingList = _bookingService.GetDetailedBookingList();
+        if (bookingList.Count == 0)
         {
-            var bookingList = _bookingService.GetDetailedBookingList();
-            if (bookingList.Count == 0)
-            {
-                return RedirectToAction(nameof(ListView));
-            }
-            foreach (var booking in bookingList)
-            {
-                _bookingService.DeleteBooking(booking.Id);
-            }
-            var seatReset = _seatService.GetSeats();
-            foreach (var seat in seatReset)
-            {
-                _seatService.DeUpdateSeats(seat.Id);
-            }
-            var saloons = _saloonService.GetSaloons();
-            foreach (var saloon in saloons)
-            {
-                saloon.AvailableSeats = saloon.NumberOfSeats;
-            }
-            _bookingService.Save();
             return RedirectToAction(nameof(ListView));
         }
+        foreach (var booking in bookingList)
+        {
+            _bookingService.DeleteBooking(booking.Id);
+        }
+        var seatReset = _seatService.GetSeats();
+        foreach (var seat in seatReset)
+        {
+            _seatService.DeUpdateSeats(seat.Id);
+        }
+        var saloons = _saloonService.GetSaloons();
+        foreach (var saloon in saloons)
+        {
+            saloon.AvailableSeats = saloon.NumberOfSeats;
+        }
+        _bookingService.Save();
+        return RedirectToAction(nameof(ListView));
     }
 }

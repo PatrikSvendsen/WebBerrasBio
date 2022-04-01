@@ -1,6 +1,8 @@
 ﻿using DataLibrary.Entities;
+using DataLibrary.Repository;
 using DataLibrary.Repository.Interfaces;
 using DataLibrary.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLibrary.Services;
 
@@ -12,7 +14,6 @@ namespace DataLibrary.Services;
 public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
-
     public MovieService(IMovieRepository movieRepository)
     {
         _movieRepository = movieRepository;

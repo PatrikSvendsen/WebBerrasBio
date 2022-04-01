@@ -5,22 +5,11 @@
 @{
     ViewData["Title"] = "Booking";
 }
-<div class="container-fluid d-flex">
-
+<div class="container-fluid d-flex wrapper">
     <div class="col-sm col">
         <h1>Book Movie</h1>
         @Html.AntiForgeryToken()
         <hr />
-        <div>
-            <div class="form-group">
-                @foreach(var item in ViewBag.Movie)
-                {
-                    <p>@item.Title</p>
-                    <p>@item.ReleaseDate</p>
-                    <p>@item.Genre</p>
-                }
-            </div>
-        </div>
         <div class="row">
             <div class="col-sm-4"></div>
             <div class="col-sm-4 col ">
@@ -42,8 +31,10 @@
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="BookedTickets" class="control-label"></label>
-                        <input asp-for="BookedTickets" class="form-control" id="bookedticks"/>
+                        <label asp-for="BookedTickets" class="control-label"></label> 
+                    @Html.DropDownListFor(m => m.BookedTickets, Enumerable.Range(1, 12).Select(i => new SelectListItem 
+                        { Text = i.ToString(), Value = i.ToString() }),
+                        new { @input="BookedTickets" , id ="bookedticks", placeholder= Html.DisplayNameFor(x => x.BookedTickets), @class = "form-control" } )  
                         <span asp-validation-for="BookedTickets" class="text-danger"></span>
                         <h3 class="Full">@ViewBag.Full</h3>
                     </div>
@@ -51,20 +42,20 @@
                         <input type="hidden" asp-for="ActiveMovieModelId" />
                         <input type="hidden"  asp-for="@TempData["price"]" id="price" />
                     </div>
-                    <div class="align-content-center btn btn-outline-secondary bi bi-arrow-left-short">
-                    <a asp-action="ListView" asp-controller="ActiveMovie">Back</a>
-                    </div>
-                                        <!-- Button to Open the Modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onClick="submitText()">
+
+                    <!-- Button to Open the Modal -->
+                    <div class="btn-group d-grid gap-1 col-12 mx-block" role="group">
+                    <button type="button" class="btn btn-primary rounded" data-bs-toggle="modal" data-bs-target="#myModal" onClick="submitText()">
                         Book
                     </button>
+                    <a class="btn btn-danger bi bi-arrow-left rounded" asp-action="ListView" asp-controller="ActiveMovie"></a>
+                    </div>
 
 
                     <!-- The Modal -->
                     <div class="modal" id="myModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
-
                                 <!-- Modal Header -->
                                 <div class="modal-header">
                                     <h4 class="modal-title">Your Booking</h4>
@@ -78,7 +69,6 @@
                                     <input type="submit" value="Create" class="btn btn-success" />
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
