@@ -35,11 +35,9 @@ public class BookingController : Controller
             return NotFound();
         }
         var activeMovie = _activeMovieService.GetActiveMovieByID(activeMovieModelId);
-        TempData["price"] = activeMovie.Price;                                //TODO Behöver fixas. Pris försvinner om man uppdaterar sidan.
-                                                                              //Gör en selectlist på antalet biljetter som man kan boka
-                                                                              //ViewBag.Movie = _activeMovieService.GetDetailedMovieListById(activeMovieModelId);    //TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum'
+        TempData["price"] = activeMovie.Price;                                
         ViewBag.Movie = _bookingService.GetDetailedBookingList()
-            .FirstOrDefault(x => x.ActiveMovieModelId == activeMovieModelId);    //TODO Vill inte fungera korrekt, sidan kraschar. Något med IEnum'
+            .FirstOrDefault(x => x.ActiveMovieModelId == activeMovieModelId);    
 
         return View();
     }
@@ -65,8 +63,7 @@ public class BookingController : Controller
             }
             _saloonService.AdjustAvailableToBookedSeats(saloon, bookingModels);
             _bookingService.InsertBooking(bookingModels);
-            _bookingService.Save();                         //TODO Finns det ett bättre sätt att lösa detta? Vill inte hämta booking.id innan man sparar,
-                                                            //står på 0
+            _bookingService.Save();
             _seatService.UpdateSeat(bookingModels.BookedTickets, bookingModels.Id);
             _seatService.Save();
             return RedirectToAction("ListView", "ActiveMovie");
@@ -91,7 +88,7 @@ public class BookingController : Controller
     }
     //POST
     [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken] //TODO Kontrollera så att denna finns där den behövs. Här och i html-filen
+    [ValidateAntiForgeryToken] 
     public IActionResult Delete(int id)
     {
 
@@ -105,7 +102,7 @@ public class BookingController : Controller
         return RedirectToAction(nameof(ListView));
     }
     //GET
-    [HttpGet] // Inget snygg men finns här enbart för att kunna tömma bookings snabbt och enkelt.
+    [HttpGet] 
     public ActionResult DeleteAll()
     {
         var bookingList = _bookingService.GetDetailedBookingList();

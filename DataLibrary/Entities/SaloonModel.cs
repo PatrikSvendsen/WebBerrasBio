@@ -13,7 +13,7 @@ public class SaloonModel
     public string Name { get; set; }
     public int NumberOfSeats { get; set; }
     [Display(Name = "Available Seats")]
-    public int AvailableSeats { get; set; } // Går detta att förbättra? 
+    public int AvailableSeats { get; set; }
     public ICollection<SeatModel> Seats { get; set; }
 
     public SaloonModel()
