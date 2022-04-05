@@ -1,4 +1,4 @@
-This is a school porject
+This is a school project
 ---------------------------------
 
 At first startup Run "update-database" in Project Manager Console to create DB locally
